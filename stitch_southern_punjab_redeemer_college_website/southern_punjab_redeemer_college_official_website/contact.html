@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact - Southern Punjab Redeemer College</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', Arial, sans-serif; background: #F4F6F9; margin: 0; padding: 40px 15px; color: #191c1e; }
+    .form-box { max-width: 580px; margin: auto; background: #fff; padding: 36px 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.08); border: 1px solid #e2e8f0; }
+    .header-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .header-bar a { color: #001126; text-decoration: none; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+    .header-bar a:hover { color: #755b00; }
+    .badge { font-size: 11px; background: #e6f4ea; color: #137333; padding: 4px 10px; border-radius: 20px; font-weight: 600; }
+    h2 { color: #001126; margin: 0 0 8px 0; font-size: 26px; }
+    p.subtitle { color: #64748b; margin: 0 0 24px 0; font-size: 14px; line-height: 1.5; }
+    label { display: block; margin: 16px 0 6px; font-weight: 600; color: #001126; font-size: 14px; }
+    input, select, textarea { width: 100%; padding: 12px 14px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 15px; box-sizing: border-box; background: #f8fafc; transition: all .2s; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: #001126; background: #fff; box-shadow: 0 0 0 3px rgba(0,17,38,0.1); }
+    textarea { resize: vertical; min-height: 110px; }
+    button { margin-top: 24px; width: 100%; padding: 14px; background: #fed255; color: #001126; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all .2s; box-shadow: 0 4px 12px rgba(254,210,85,0.4); }
+    button:hover { background: #ecc246; transform: translateY(-1px); }
+    button:disabled { opacity: 0.7; cursor: not-allowed; }
+    #result { margin-top: 18px; text-align: center; font-weight: 600; font-size: 15px; padding: 12px; border-radius: 8px; }
+    .footer-note { text-align: center; font-size: 13px; color: #64748b; margin-top: 24px; border-top: 1px solid #e2e8f0; padding-top: 16px; }
+  </style>
+</head>
+<body>
+
+<div class="form-box">
+  <div class="header-bar">
+    <a href="/">&larr; Back to Main Website</a>
+    <span class="badge">&bull; Web3Forms Cloud Connected</span>
+  </div>
+
+  <h2>Contact / Apply Now</h2>
+  <p class="subtitle">Southern Punjab Redeemer College &bull; Admissions &amp; Inquiries Desk</p>
+
+  <form id="contactForm">
+    <input type="hidden" name="access_key" value="306b03d6-8c3a-4047-b598-8098a9355ff4">
+    <input type="hidden" name="subject" value="New Inquiry - Southern Punjab Redeemer College">
+    <input type="hidden" name="from_name" value="SPRC College Website">
+    <input type="checkbox" name="botcheck" style="display:none;">
+
+    <label for="name">Full Name *</label>
+    <input type="text" id="name" name="name" placeholder="e.g. Muhammad Ahmad" required>
+
+    <label for="email">Email Address *</label>
+    <input type="email" id="email" name="email" placeholder="name@domain.com" required>
+
+    <label for="phone">Phone / WhatsApp Number *</label>
+    <input type="tel" id="phone" name="phone" placeholder="+92 300 1234567" required>
+
+    <label for="program">Program of Interest *</label>
+    <select id="program" name="program" required>
+      <option value="">Select a program</option>
+      <option value="BS Information Technology">BS Information Technology</option>
+      <option value="BS Computer Science">BS Computer Science</option>
+      <option value="BS English">BS English Literature &amp; Linguistics</option>
+      <option value="BBA">BBA (Honors) Business Administration</option>
+      <option value="B.Ed">Bachelor of Education (B.Ed)</option>
+    </select>
+
+    <label for="message">Message / Questions *</label>
+    <textarea id="message" name="message" placeholder="Ask about fees, transport, admissions deadlines..." required></textarea>
+
+    <button type="submit" id="submitBtn">Submit Application / Inquiry</button>
+    <div id="result"></div>
+  </form>
+
+  <div class="footer-note">
+    Official Portal Desk &bull; UAN: +92 (061) 111-777-772 &bull; admissions@sprc.edu.pk
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('contactForm');
+  const result = document.getElementById('result');
+  const submitBtn = document.getElementById('submitBtn');
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    result.style.display = 'block';
+    result.style.background = '#f1f5f9';
+    result.style.color = '#001126';
+    result.textContent = 'Submitting your data to Web3Forms...';
+    submitBtn.disabled = true;
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(new FormData(form)))
+      });
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        result.style.background = '#dcfce7';
+        result.style.color = '#15803d';
+        result.innerHTML = '&#10004; Thank you! Your submission has been securely stored and sent to our admissions desk.';
+        form.reset();
+      } else {
+        result.style.background = '#fee2e2';
+        result.style.color = '#b91c1c';
+        result.textContent = data.message || 'Something went wrong. Please try again.';
+      }
+    } catch (err) {
+      result.style.background = '#fee2e2';
+      result.style.color = '#b91c1c';
+      result.textContent = 'Network error. Please try again.';
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+</script>
+
+</body>
+</html>
